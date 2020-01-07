@@ -36,7 +36,6 @@ router.route('/:id').delete((req, res) => {
 });
 
 router.route('/update/:id').post((req, res) => {
-    console.log(req.params.id);
     Rushee.findById(req.params.id)
         .then((rushee) => {
             firstName = req.body.firstName;
