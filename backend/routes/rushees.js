@@ -42,19 +42,23 @@ router.route('/update/:id').post((req, res) => {
             firstName = req.body.firstName;
             lastName = req.body.lastName;
             resume = req.body.resume;
+            elo = req.body.elo;
             
             if (firstName) {
                 rushee.firstName = firstName;
             }
-            if (req.body.lastName) {
+            if (lastName) {
                 rushee.lastName = lastName;
             }
-            if (req.body.resume) {
+            if (resume) {
                 rushee.resume = resume;
+            }
+            if (elo) {
+                rushee.elo = elo;
             }
 
             rushee.save()
-                .then(() => res.json("Rushee updated!"))
+                .then(() => res.json("Rushee " + rushee.firstName + " " + rushee.lastName + " updated!"))
                 .catch((err) => res.status(400).json('Error: ' + err));
         })
         .catch((err) => res.status(400).json('Error: ' + err));
