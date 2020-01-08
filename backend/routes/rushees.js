@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 const router = express.Router();
 let Rushee = require('../models/rushee.model');
@@ -38,10 +39,10 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Rushee.findById(req.params.id)
         .then((rushee) => {
-            firstName = req.body.firstName;
-            lastName = req.body.lastName;
-            resume = req.body.resume;
-            elo = req.body.elo;
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const resume = req.body.resume;
+            const elo = req.body.elo;
             
             if (firstName) {
                 rushee.firstName = firstName;
@@ -61,6 +62,55 @@ router.route('/update/:id').post((req, res) => {
                 .catch((err) => res.status(400).json('Error: ' + err));
         })
         .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+function winProbability(rating1, rating2) { 
+    return 1.0 * 1.0 / (1 + 1.0 *  Math.pow(10, 1.0 * (rating1 - rating2) / 400)); 
+}
+
+/*
+For client to submit results of a resume match
+Rushee of id1 is the winner, rushee of id2 is the loser
+*/
+router.route('/submit-match/:id1/:id2').post((req, res) => {
+    Rushee.find({
+        '_id': { $in: [
+            req.params.id1,
+            req.params.id2
+        ]}
+    }, function(err, rushees){
+        if (err) {
+            res.status(400).json('Error: ' + err);
+        }
+        else {
+            let rushee1 = rushees[0];
+            let rushee2 = rushees[1];
+            let elo1 = rushee1.elo;
+            let elo2 = rushee2.elo;
+
+            // To calculate the Winning 
+            // Probability of Rushee 2
+            const p2 = winProbability(elo1, elo2);
+        
+            // To calculate the Winning 
+            // Probability of Rushee 1
+            const p1 = winProbability(elo2, elo1); 
+
+            // Rushee 1 wins the match
+            elo1 = elo1 + config.app.elo.K * (1.0 - p1);
+            elo2 = elo2 + config.app.elo.K * (0.0 - p2);
+
+            // Update new elo's
+            rushee1.elo = elo1;
+            rushee2.elo = elo2;
+        
+            rushee1.save()
+            .then(rushee2.save())
+            .then(res.json("Elo's updated! " + rushee1.firstName + "'s elo: " + rushee1.elo + ", " + rushee2.firstName  + "'s elo: " + rushee2.elo))
+            .catch((err) => res.status(400).json('Error: ' + err));
+        }
+    });
+
 });
 
 module.exports = router;

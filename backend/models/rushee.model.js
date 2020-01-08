@@ -19,8 +19,8 @@ const rusheeSchema = new schema({
         trim: true
     },
     elo: {
-        type: mongoose.Decimal128,
-        default: 0.0
+        type: Number,
+        default: 1000.0
     }
 }, {
     timestampes: true
