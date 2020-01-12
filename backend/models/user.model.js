@@ -9,6 +9,9 @@ const userSchema = new schema({
         unique: true,
         trim: true,
         minlength: 3
+    },
+    admin: {
+        default: false
     }
 }, {
     timestampes: true
