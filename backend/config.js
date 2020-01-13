@@ -3,6 +3,10 @@ const config = {
         elo: {
             K: 50
         }
+    },
+    aws: {
+        secretAcessKey: process.env.secretAcessKey,
+        accessKeyId: process.env.accessKeyId
     }
 };
 

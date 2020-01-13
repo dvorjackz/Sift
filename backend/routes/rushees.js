@@ -1,7 +1,10 @@
 const express = require('express');
 const config = require('../config');
+const upload = require('../services/file-upload');
 
 const router = express.Router();
+const singleUpload = upload.single('image'); 
+
 let Rushee = require('../models/rushee.model');
 
 router.route('/').get((req, res) => {
@@ -75,6 +78,15 @@ router.route('/rankings').get((req, res) => {
     Rushee.find().sort({ elo : -1 })
     .then((rushees) => res.json(rushees))
     .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+/* -------------------------------------- CRUD ------------------------------------- */
+
+router.route('/upload-resume').post((req,res) => {
+    singleUpload(req, res, function(err) {
+        console.log(req.file);
+        res.json( { 'imageURL': req.file.location } );
+    });
 });
 
 router.route('/add').post((req, res) => {
