@@ -15,12 +15,13 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: 'dsp-winter-2020-resumes',
+    acl: 'public-read',
     metadata: function (req, file, cb) {
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
       cb(null, file.originalname);
-    }
+    } 
   })
 });
  
