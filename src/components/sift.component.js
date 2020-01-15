@@ -54,7 +54,6 @@ export default class Sift extends Component {
 
         let id1 = this.state.id1;
         let id2 = this.state.id2;
-        let tthis = this;
 
         // Used to shield against users mashing the same arrow key repeatedly
         function sleep(milliseconds) {
@@ -69,21 +68,21 @@ export default class Sift extends Component {
         document.onkeydown = function(evt) {
             evt = evt || window.event;
             
-            if (evt.keyCode == 37) {
+            if (evt.keyCode === 37) {
                 if (evt.repeat) { return }
 
                 console.log('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2).then( res => {
-                    sleep(2000);
+                    sleep(1000);
                     window.location.reload();
                 });
             }
-            else if (evt.keyCode == 39) {
+            else if (evt.keyCode === 39) {
                 if (evt.repeat) { return }
 
                 console.log('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1).then( res => {
-                    sleep(2000);
+                    sleep(1000);
                     window.location.reload();
                 });
             }
@@ -99,7 +98,9 @@ export default class Sift extends Component {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     style={half}>
-                        <object style={resume} data={this.state.resume1} type="application/pdf" />
+                        <object style={resume} data={this.state.resume1} type="application/pdf">
+                            Resume could not load.
+                        </object>
                     </motion.div>
 
                     <div style={spacer}></div>
@@ -111,7 +112,9 @@ export default class Sift extends Component {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     style={half}>
-                        <object style={resume} data={this.state.resume2} type="application/pdf" />
+                        <object style={resume} data={this.state.resume2} type="application/pdf">
+                            Resume could not load.
+                        </object>
                     </motion.div>
                 </div>
             </footer>
