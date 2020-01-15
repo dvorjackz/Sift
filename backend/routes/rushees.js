@@ -85,7 +85,26 @@ router.route('/rankings').get((req, res) => {
 router.route('/upload-resume').post((req,res) => {
     singleUpload(req, res, function(err) {
         console.log(req.file);
-        res.json( { 'imageURL': req.file.location } );
+
+        const fullName = req.file.key;
+
+        var temp = fullName.split(" ");
+        temp = temp.slice(-2);
+        temp[1] = temp[1].split(".")[0];
+
+        const firstName = temp[0];
+        const lastName = temp[1];
+        const resume = req.file.location;
+
+        console.log(firstName + ", " + lastName);
+        
+        const newRushee = new Rushee({"firstName": firstName, 
+                                "lastName": lastName, 
+                                "resume": resume});
+
+        newRushee.save()
+            .then(() => res.json("Rushee  " + firstName + " " + lastName + " was added! Link to resume: " + resume))
+            .catch(err => res.status(400).json('Error: ' + err));
     });
 });
 
