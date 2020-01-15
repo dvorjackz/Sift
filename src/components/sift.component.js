@@ -90,7 +90,6 @@ export default class Sift extends Component {
                     <div style={half}>
                         <object style={resume} data={this.state.resume2} type="application/pdf" />
                     </div>
-
                 </div>
             </footer>
         );
