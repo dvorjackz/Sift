@@ -12,7 +12,6 @@ function App() {
     <Router>
       <div className="container">
         <Navbar />
-        <br />
         <Route path="/" exact component={Sift} />
         <Route path="/rankings" exact component={Rankings} />
         <Route path="/create" exact component={CreateRushee} />
