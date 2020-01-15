@@ -31,19 +31,24 @@ export default class Sift extends Component {
         let id1 = this.state.id1;
         let id2 = this.state.id2;
 
+        // Left and right arrow keys choose the winner of the resume match
         document.onkeydown = function(evt) {
             evt = evt || window.event;
             
             if (evt.keyCode == 37) {
+                if (evt.repeat) { return }
+
                 console.log('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2).then( res => {
-                    console.log(res);
+                    window.location.reload();
                 });
             }
             else if (evt.keyCode == 39) {
+                if (evt.repeat) { return }
+                
                 console.log('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1).then( res => {
-                    console.log(res);
+                    window.location.reload();
                 });
             }
         };
