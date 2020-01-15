@@ -48,17 +48,20 @@ export default class Rankings extends Component {
     render() {
 
         const middle = {
-            height: '90vh',
+            height: '70vh',
+            marginTop: '10vh',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            overflowY: "auto",
         };
 
         return (
-            <motion.ol variants={container}
+            <motion.ol 
+            variants={container}
             initial="hidden"
-            animate="show" style={middle}>
+            animate="show" 
+            style={middle}>
                 <Ranking rushees={this.state.rankings}></Ranking>
             </motion.ol>
         );

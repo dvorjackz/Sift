@@ -111,7 +111,7 @@ router.route('/upload-resume').post((req,res) => {
                                 "resume": resume});
 
         newRushee.save()
-            .then(() => res.json("Rushee  " + firstName + " " + lastName + " was added! Link to resume: " + resume))
+            .then(() => res.json({message: "Rushee  " + firstName + " " + lastName + " was added! Link to resume: " + resume, firstName: firstName, lastName: lastName}))
             .catch(err => res.status(400).json('Error: ' + err));
     });
 });
@@ -139,6 +139,12 @@ router.route('/:id').get((req, res) => {
 router.route('/:id').delete((req, res) => {
     Rushee.findByIdAndDelete(req.params.id)
         .then(() => res.json("Rushee deleted."))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+router.route('/').delete((req, res) => {
+    Rushee.deleteMany(req.params.id)
+        .then(() => res.json("Rushees deleted."))
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
