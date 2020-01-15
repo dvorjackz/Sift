@@ -35,22 +35,35 @@ export default class Sift extends Component {
             }
         };
 
+        const magic = {
+            "text-align": "center",
+	        "float": "center"
+        };
+
+        const half = {
+            display: "inline-block",
+            width: "50%"
+        };
+
         const resume = {
-            padding: "20px",
-            display: "inline",
-            float: "none"
+            padding: "30px 40px",
+            width: "100%",
+            height: "710px",
         };
 
         return (
-            <div onKeyDown={this.onKeyPressed}
-            tabIndex="0">
-                <p>Sift!</p> 
+            <footer style={magic}>
+                <div className="container" onKeyDown={this.onKeyPressed} tabIndex="0">
+                    <div style={half}>
+                        <object style={resume} data={this.state.resume1} type="application/pdf" />
+                    </div>
 
-                <embed style={resume} src={this.state.resume1} width="500" height="375" />
+                    <div style={half}>
+                        <object style={resume} data={this.state.resume2} type="application/pdf" />
+                    </div>
 
-                <embed style={resume} src={this.state.resume2} width="500" height="375" />
-
-            </div>
+                </div>
+            </footer>
         );
     }
 
