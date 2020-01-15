@@ -9,7 +9,6 @@ export default class CreateRushee extends Component {
     }
 
     fileSelectedHandler = event => {
-        console.log(event.target.files[0]);
         this.setState({
             selectedFile: event.target.files[0]
         });
@@ -23,7 +22,7 @@ export default class CreateRushee extends Component {
                 console.log("Upload progress: " + Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%");
             }
         }).then((res) => {
-            console.log(res);
+            alert("Uploaded successfully.")
         });
     }
 

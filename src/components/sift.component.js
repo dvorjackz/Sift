@@ -18,42 +18,40 @@ export default class Sift extends Component {
 
     componentDidMount() {
         axios.get('http://localhost:5000/rushees/request-match/2').then((res) => {
-            console.log(res.data);
             this.setState({
                 resume1: res.data[0].resume,
                 resume2: res.data[1].resume,
                 id1: res.data[0]._id,
                 id2: res.data[1]._id
             });
-            console.log(this.state);
         });
     }
 
     render() {
 
-        let magic = {
+        const magic = {
             "textAlign": "center",
 	        "float": "center"
         };
 
-       let half = {
+       const half = {
             display: "inline-block",
             width: "45%"
         };
 
-        let resume = {
+        const resume = {
             padding: "20px 0px",
             width: "100%",
             height: "725px",
         };
 
-        let spacer = {
+        const spacer = {
             width: "5%",
             display: "inline-block"
         };
 
-        let id1 = this.state.id1;
-        let id2 = this.state.id2;
+        const id1 = this.state.id1;
+        const id2 = this.state.id2;
 
         // Used to shield against users mashing the same arrow key repeatedly
         function sleep(milliseconds) {
@@ -71,7 +69,6 @@ export default class Sift extends Component {
             if (evt.keyCode === 37) {
                 if (evt.repeat) { return }
 
-                console.log('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2).then( res => {
                     sleep(1000);
                     window.location.reload();
@@ -80,7 +77,6 @@ export default class Sift extends Component {
             else if (evt.keyCode === 39) {
                 if (evt.repeat) { return }
 
-                console.log('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1);
                 axios.post('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1).then( res => {
                     sleep(1000);
                     window.location.reload();
