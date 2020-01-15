@@ -18,25 +18,38 @@ export default class Sift extends Component {
             console.log(res.data);
             this.setState({
                 resume1: res.data[0].resume,
-                resume2: res.data[1].resume
+                resume2: res.data[1].resume,
+                id1: res.data[0]._id,
+                id2: res.data[1]._id
             });
+            console.log(this.state);
         });
     }
 
     render() {
 
+        let id1 = this.state.id1;
+        let id2 = this.state.id2;
+
         document.onkeydown = function(evt) {
             evt = evt || window.event;
+            
             if (evt.keyCode == 37) {
-                console.log("left");
+                console.log('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2);
+                axios.post('http://localhost:5000/rushees/submit-match/' + id1 + '/' + id2).then( res => {
+                    console.log(res);
+                });
             }
             else if (evt.keyCode == 39) {
-                console.log("right");
+                console.log('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1);
+                axios.post('http://localhost:5000/rushees/submit-match/' + id2 + '/' + id1).then( res => {
+                    console.log(res);
+                });
             }
         };
 
         const magic = {
-            "text-align": "center",
+            "textAlign": "center",
 	        "float": "center"
         };
 

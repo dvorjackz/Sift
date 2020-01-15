@@ -45,8 +45,16 @@ router.route('/submit-match/:id1/:id2').post((req, res) => {
             res.status(400).json('Error: ' + err);
         }
         else {
-            let rushee1 = rushees[0];
-            let rushee2 = rushees[1];
+            let rushee1 = null;
+            let rushee2 = null;
+            if (rushees[0]._id == req.params.id1) {
+                rushee1 = rushees[0];
+                rushee2 = rushees[1];
+            }
+            else if (rushees[1]._id == req.params.id1) {
+                rushee1 = rushees[1];
+                rushee2 = rushees[0];
+            }
             let elo1 = rushee1.elo;
             let elo2 = rushee2.elo;
 
