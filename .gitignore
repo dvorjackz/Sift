@@ -25,3 +25,6 @@ yarn-error.log*
 
 # dotenv
 /backend/.env
+
+# aws
+/sift.pem

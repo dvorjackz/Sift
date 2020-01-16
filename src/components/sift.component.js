@@ -22,7 +22,7 @@ export default class Sift extends Component {
         axios.get('http://localhost:5000/rushees/request-match/' + config.app.queueSize).then((res) => {
             console.log(res.data.length);
             
-            if (res.data.length < 2) {
+            if (res.data.length < minRecords) {
                 alert("Less than " + minRecords + " resumes in the database.");
             }
             else {
