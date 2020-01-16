@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom';
 export default class Navbar extends Component {
 
     render() {
+
+        const nav = {
+            paddingBottom: "0px"
+        };
+
         return (
-            <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+            <nav style={nav} className="navbar navbar-light navbar-expand-lg">
                 <Link to="/" className="navbar-brand">Sift</Link>
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav mr-auto"> 
