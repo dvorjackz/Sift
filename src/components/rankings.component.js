@@ -22,7 +22,7 @@ const item = {
 const Ranking = ({rushees}) => (
     <>
       {rushees.map(rushee => (
-        <motion.li variants={item} style={ {listStyleType: "none"} } key={rushee._id}>{rushee.firstName} {rushee.lastName}</motion.li>
+        <motion.li variants={item} style={ {listStyleType: "none"} } key={rushee._id}><a href={rushee.resume}>{rushee.firstName} {rushee.lastName}</a></motion.li>
       ))}
     </>
   ); 
