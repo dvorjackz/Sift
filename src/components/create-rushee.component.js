@@ -56,14 +56,14 @@ export default class CreateRushee extends Component {
 
         return (
             <div>
-            <Alert color="info" isOpen={this.state.visibleAlert} style={alert}>
-                {this.state.firstName} {this.state.lastName}'s resume was added!
-            </Alert>
-            <div style={middle}>
-                <label className="btn btn-outline-primary">
-                    Upload Resume <input type="file" onChange={this.fileSelectedHandler} hidden/>
-                </label>
-            </div>
+                <Alert color="info" isOpen={this.state.visibleAlert} style={alert}>
+                    {this.state.firstName} {this.state.lastName}'s resume was added!
+                </Alert>
+                <div style={middle}>
+                    <label className="btn btn-outline-primary">
+                        Upload Resume <input type="file" onChange={this.fileSelectedHandler} hidden/>
+                    </label>
+                </div>
             </div>
         );
     }

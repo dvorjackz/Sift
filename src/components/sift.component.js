@@ -4,6 +4,8 @@ import axios from 'axios';
 import { motion } from "framer-motion";
 import config from "../config";
 
+const minRecords = config.app.queueSize + config.app.safety;
+
 export default class Sift extends Component {
 
     constructor(props) {
@@ -17,16 +19,22 @@ export default class Sift extends Component {
             id2: null
         }
 
-
         axios.get('http://localhost:5000/rushees/request-match/' + config.app.queueSize).then((res) => {
-            this.setState({
-                resumes: res.data,
-                resume1: res.data[0].resume,
-                resume2: res.data[1].resume,
-                id1: res.data[0]._id,
-                id2: res.data[1]._id
-            });
-            console.log(this.state);
+            console.log(res.data.length);
+            
+            if (res.data.length < 2) {
+                alert("Less than " + minRecords + " resumes in the database.");
+            }
+            else {
+                this.setState({
+                    resumes: res.data,
+                    resume1: res.data[0].resume,
+                    resume2: res.data[1].resume,
+                    id1: res.data[0]._id,
+                    id2: res.data[1]._id
+                });
+                console.log(this.state);
+            }
         });
     }
 
@@ -85,6 +93,7 @@ export default class Sift extends Component {
             axios.post('http://localhost:5000/rushees/submit-match/' + winner + '/' + loser).then( res => {
                 // Remove two resumes from head of queue and update accoringly
                 console.log(res.data);
+
                 tthis.setState({
                     resumes: tthis.state.resumes.filter((_, i) => i !== 0 && i !== 1),
                     resume1: tthis.state.resumes[0].resume,
