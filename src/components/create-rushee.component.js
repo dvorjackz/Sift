@@ -24,7 +24,11 @@ export default class CreateRushee extends Component {
 
     fileSelectedHandler = event => {
         const fd = new FormData();
-        fd.append('image', event.target.files[0], event.target.files[0].name);
+        for (let i = 0; i < event.target.files.length; i++) {
+            // I think 'image', or the name of the field in the formdata must match what is used with multupload in the backend
+            fd.append('files', event.target.files[i]);
+        }
+        console.log(fd.numFiles);
         HTTPClient.post('rushees/upload-resume', fd, {
             onUploadProgress: progressEvent => {
                 console.log("Upload progress: " + Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%");

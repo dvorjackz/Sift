@@ -22,8 +22,8 @@ export default class Sift extends Component {
         HTTPClient.get('rushees/request-match/' + config.app.queueSize).then((res) => {
             console.log(res.data.length);
             
-            if (res.data.length < minRecords) {
-                alert("Less than " + minRecords + " resumes in the database.");
+            if (res.data.length < config.app.queueSize) {
+                alert("Less than " + config.app.queueSize + " resumes in the database. Try to have at least " + minRecords + " resumes in the database for optimal use.");
             }
             else {
                 this.setState({
