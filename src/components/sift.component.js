@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { HTTPClient } from '../axiosConfig';
 import { motion } from "framer-motion";
 import config from "../config";
 
@@ -19,7 +19,7 @@ export default class Sift extends Component {
             id2: null
         }
 
-        axios.get('http://localhost:5000/rushees/request-match/' + config.app.queueSize).then((res) => {
+        HTTPClient.get('rushees/request-match/' + config.app.queueSize).then((res) => {
             console.log(res.data.length);
             
             if (res.data.length < minRecords) {
@@ -90,7 +90,7 @@ export default class Sift extends Component {
                 loser = tthis.state.id1;
             }
 
-            axios.post('http://localhost:5000/rushees/submit-match/' + winner + '/' + loser).then( res => {
+            HTTPClient.post('rushees/submit-match/' + winner + '/' + loser).then( res => {
                 // Remove two resumes from head of queue and update accoringly
                 console.log(res.data);
 
@@ -104,7 +104,7 @@ export default class Sift extends Component {
 
                 // When there aren't many resumes remaining in the queue, add more
                 if (tthis.state.resumes.length === config.app.safety) {
-                    axios.get('http://localhost:5000/rushees/request-match/20').then((res) => {
+                    HTTPClient.get('rushees/request-match/20').then((res) => {
                         tthis.setState({
                             resumes: tthis.state.resumes.concat(res.data)
                         });

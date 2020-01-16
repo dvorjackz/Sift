@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import axios from 'axios';
+import { HTTPClient } from '../axiosConfig';
 
 export default class CreateRushee extends Component {
 
@@ -26,7 +26,7 @@ export default class CreateRushee extends Component {
     fileSelectedHandler = event => {
         const fd = new FormData();
         fd.append('image', event.target.files[0], event.target.files[0].name);
-        axios.post('http://localhost:5000/rushees/upload-resume', fd, {
+        HTTPClient.post('rushees/upload-resume', fd, {
             onUploadProgress: progressEvent => {
                 console.log("Upload progress: " + Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%");
             }

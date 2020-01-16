@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { HTTPClient } from '../axiosConfig';
 import { motion } from "framer-motion";
 
 // Doesn't work because list is dynamically generated
@@ -38,7 +38,7 @@ export default class Rankings extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/rushees/rankings').then((res) => {
+        HTTPClient.get('rushees/rankings').then((res) => {
             this.setState({
                 rankings: res.data
             });
