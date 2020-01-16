@@ -123,7 +123,7 @@ export default class Sift extends Component {
                     animate={{ scale: 1 }} 
                     transition={{ duration: 1 }} 
                     initial={{ scale: 0.8}} 
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
                     style={half}>
                         <object style={resume} data={this.state.resume1} type="application/pdf">
@@ -137,7 +137,7 @@ export default class Sift extends Component {
                     animate={{ scale: 1 }} 
                     transition={{ duration: 1 }} 
                     initial={{ scale: 0.8}} 
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
                     style={half}>
                         <object style={resume} data={this.state.resume2} type="application/pdf">
