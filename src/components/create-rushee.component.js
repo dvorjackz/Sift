@@ -10,8 +10,7 @@ export default class CreateRushee extends Component {
 
         this.state = {
             visibleAlert: false,
-            firstName: "",
-            lastName: ""
+            numFiles: 0
         }
     }
 
@@ -31,7 +30,7 @@ export default class CreateRushee extends Component {
                 console.log("Upload progress: " + Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%");
             }
         }).then((res) => {
-            this.setState({firstName: res.data.firstName, lastName: res.data.lastName});
+            this.setState({numFiles: res.data.numFiles});
             this.showAlert();
         });
     }
@@ -57,11 +56,11 @@ export default class CreateRushee extends Component {
         return (
             <div>
                 <Alert color="info" isOpen={this.state.visibleAlert} style={alert}>
-                    {this.state.firstName} {this.state.lastName}'s resume was added!
+                    {this.state.numFiles} resumes were added!
                 </Alert>
                 <div style={middle}>
                     <label className="btn btn-outline-primary">
-                        Upload Resume <input type="file" onChange={this.fileSelectedHandler} hidden/>
+                        Upload Resume <input type="file" onChange={this.fileSelectedHandler} hidden multiple/>
                     </label>
                 </div>
             </div>
