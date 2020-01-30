@@ -1,4 +1,4 @@
-# Poolfolio
+# Sift
 Compare two resumes at time. Left and right arrow keys select the "winning" resume. Resumes are ranked using a chess-based elo system. Resumes are pulled in batches to improve performance. Backend repo found [here](https://github.com/dvorjackz/Sift-backend). Live at [bit.ly/dsp-sift](https://bit.ly/dsp-sift). When adding resumes, make sure the resumes are named "First Last.pdf" so that the names can be parsed correctly. 
     
 ### Deployment Instructions
