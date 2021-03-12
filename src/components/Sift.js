@@ -72,7 +72,7 @@ const Sift = () => {
         });
     }, []);
 
-    const containerStyle = {
+    const containerStyles = {
         height: window.innerHeight,
         display: 'flex',
         flexDirection: 'row',
@@ -80,14 +80,22 @@ const Sift = () => {
         alignItems: 'center'
     };
 
-    const resumeStyle = {
+    const subContainerStyles = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    };
+
+    const resumeStyles = {
         borderRadius: '1%',
-        boxShadow: 'rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset'
-    }
+        boxShadow: 'rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset',
+        margin: '10px'
+    };
 
     if (loaded) {
         return (
-            <div style={containerStyle}>
+            <div style={containerStyles}>
+                <div style={subContainerStyles}>
                     <motion.div 
                         transition={{ duration: 0.2 }} 
                         whileHover={{ scale: 1.025 }}
@@ -106,14 +114,20 @@ const Sift = () => {
                         <div class="fade-in">
                             <img
                                 onLoad={() => setImg1Loaded(true)}
-                                style={{...resumeStyle, ...{display: img1Loaded ? 'inline' : 'none'}}}
+                                style={{...resumeStyles, ...{display: img1Loaded ? 'inline' : 'none'}}}
                                 draggable={false}
                                 height={window.innerHeight*4/5}
                                 src={resumePairs[0][0].resumeURL}
-                                alt={'Could not load'} /> 
+                                alt={'Could not load'} />
                         </div>   
                     </motion.div>
 
+                    <a href={resumePairs[0][0].resumeURL} target='_blank' rel='noreferrer'>
+                        🔍
+                    </a>
+                </div>
+
+                <div style={subContainerStyles}>
                     <motion.div 
                         transition={{ duration: 0.2 }} 
                         whileHover={{ scale: 1.025 }}
@@ -132,13 +146,18 @@ const Sift = () => {
                         <div class="fade-in">
                             <img
                                 onLoad={() => setImg2Loaded(true)}
-                                style={{...resumeStyle, ...{display: img2Loaded ? 'inline' : 'none'}}}
+                                style={{...resumeStyles, ...{display: img2Loaded ? 'inline' : 'none'}}}
                                 draggable={false}
                                 height={window.innerHeight*4/5}
                                 src={resumePairs[0][1].resumeURL}
                                 alt={'Could not load'} />
                         </div>
                     </motion.div>
+
+                    <a href={resumePairs[0][1].resumeURL} target='_blank' rel='noreferrer'>
+                        🔍
+                    </a>
+                </div>
             </div>
         );
     } else {
