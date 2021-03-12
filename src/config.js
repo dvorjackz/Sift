@@ -1,7 +1,7 @@
 const config = {
     app: {
-        queueSize: 12,
-        safety: 6 // When to pull in more resumes
+        queueSize: 6,
+        safety: 3 // When to pull in more resumes
     }
 };
 

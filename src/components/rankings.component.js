@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { HTTPClient } from '../axiosConfig';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+
+import { Axios } from '../util/config'
 
 // Doesn't work because list is dynamically generated
 const container = {
@@ -22,10 +22,10 @@ const item = {
 const Ranking = ({rushees}) => (
     <>
       {rushees.map(rushee => (
-        <motion.li variants={item} style={ {listStyleType: "none"} } key={rushee._id}><a href={rushee.resume}>{rushee.firstName} {rushee.lastName}</a></motion.li>
+        <motion.li variants={item} style={ {listStyleType: "none"} } key={rushee._id}><a href={rushee.resumeURL}>{rushee.firstName} {rushee.lastName}</a></motion.li>
       ))}
     </>
-  ); 
+); 
 
 export default class Rankings extends Component {
 
@@ -38,7 +38,7 @@ export default class Rankings extends Component {
     }
 
     componentDidMount() {
-        HTTPClient.get('rushees/rankings').then((res) => {
+        Axios.get('applicants/rankings').then((res) => {
             this.setState({
                 rankings: res.data
             });

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { HTTPClient } from '../axiosConfig';
 import { motion } from "framer-motion";
-import config from "../config";
 
-const minRecords = config.app.queueSize + config.app.safety;
+import config from '../config';
+import { Axios } from '../util/config';
 
 export default class Sift extends Component {
 
@@ -19,27 +17,24 @@ export default class Sift extends Component {
             id2: null
         }
 
-        HTTPClient.get('rushees/request-match/' + config.app.queueSize).then((res) => {
-            console.log(res.data.length);
-            
-            if (res.data.length < config.app.queueSize) {
-                alert("Less than " + config.app.queueSize + " resumes in the database. Try to have at least " + minRecords + " resumes in the database for optimal use.");
-            }
-            else {
-                this.setState({
-                    resumes: res.data,
-                    resume1: res.data[0].resume,
-                    resume2: res.data[1].resume,
-                    id1: res.data[0]._id,
-                    id2: res.data[1]._id
-                });
-                console.log(this.state);
-            }
-        });
+        Axios.get('applicants/requestMatch/', {
+			params: {
+			  	count: config.app.queueSize,
+			}
+		}).then((res) => {
+            this.setState({
+                resumes: res.data,
+                resume1: res.data[0][0].resumeURL,
+                resume2: res.data[0][1].resumeURL,
+                id1: res.data[0][0]._id,
+                id2: res.data[0][1]._id
+            });
+		}).catch((err) => {
+			console.log(err);
+		})
     }
 
     render() {
-
         const magic = {
             "textAlign": "center",
 	        "float": "center"
@@ -90,30 +85,34 @@ export default class Sift extends Component {
                 loser = tthis.state.id1;
             }
 
-            HTTPClient.post('rushees/submit-match/' + winner + '/' + loser).then( res => {
+            Axios.post('applicants/submitMatch/' + winner + '/' + loser).then( res => {
                 // Remove two resumes from head of queue and update accoringly
                 console.log(res.data);
 
                 tthis.setState({
-                    resumes: tthis.state.resumes.filter((_, i) => i !== 0 && i !== 1),
-                    resume1: tthis.state.resumes[0].resume,
-                    resume2: tthis.state.resumes[1].resume,
-                    id1: tthis.state.resumes[0]._id,
-                    id2: tthis.state.resumes[1]._id
+                    resumes: tthis.state.resumes.filter((_, i) => i !== 0),
+                    resume1: tthis.state.resumes[0][0].resumeURL,
+                    resume2: tthis.state.resumes[0][1].resumeURL,
+                    id1: tthis.state.resumes[0][0]._id,
+                    id2: tthis.state.resumes[0][1]._id
                 });
 
                 // When there aren't many resumes remaining in the queue, add more
                 if (tthis.state.resumes.length === config.app.safety) {
-                    HTTPClient.get('rushees/request-match/20').then((res) => {
+                    Axios.get('applicants/requestMatch/', {
+                        params: {
+                              count: config.app.queueSize,
+                        }
+                    }).then((res) => {
+                        console.log('Reloading resumes!');
                         tthis.setState({
                             resumes: tthis.state.resumes.concat(res.data)
                         });
-                    });
+                    }).catch((err) => {
+                        console.log(err);
+                    })
                 }
-
-                console.log(tthis.state);
             });
-
         };
 
         return (
