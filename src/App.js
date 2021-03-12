@@ -10,12 +10,10 @@ import CreateRushee from "./components/create-rushee.component";
 function App() {
   return (
     <Router>
-      <div className="container">
-        <Navbar />
+        <Navbar height={50} />
         <Route path="/" exact component={Sift} />
         <Route path="/rankings" exact component={Rankings} />
         <Route path="/create" exact component={CreateRushee} />
-      </div>
     </Router>
   );
 }

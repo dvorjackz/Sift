@@ -1,151 +1,147 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 
 import config from '../config';
 import { Axios } from '../util/config';
+import Loading from './Loading';
 
-export default class Sift extends Component {
+const Sift = () => {
+    const [resumePairs, setResumePairs] = useState([]);
+    // For dealing with HTTP request blocking
+    const [loaded, setLoaded] = useState(false);
+    // Following two help just slightly with images flickering on load
+    const [img1Loaded, setImg1Loaded] = useState(false);
+    const [img2Loaded, setImg2Loaded] = useState(false);
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            resumes: null,
-            resume1: null,
-            resume2: null,
-            id1: null,
-            id2: null
-        }
-
+    // When there aren't many resumes remaining in the queue, add more
+    const restockResumes = () => {
         Axios.get('applicants/requestMatch/', {
-			params: {
-			  	count: config.app.queueSize,
-			}
-		}).then((res) => {
-            this.setState({
-                resumes: res.data,
-                resume1: res.data[0][0].resumeURL,
-                resume2: res.data[0][1].resumeURL,
-                id1: res.data[0][0]._id,
-                id2: res.data[0][1]._id
-            });
-		}).catch((err) => {
-			console.log(err);
-		})
+            params: {
+                count: config.app.queueSize,
+            }
+        }).then((res) => {
+            console.log('Reloading resumes!');
+            setResumePairs(resumePairs.concat(res.data))
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
-    render() {
-        const magic = {
-            "textAlign": "center",
-	        "float": "center"
-        };
+    const pickResume = async (resume1wins, resume1, resume2) => {
+        let winner = resume1wins ? resume1 : resume2;
+        let loser = resume1wins ? resume2 : resume1;
 
-       const half = {
-            display: "inline-block",
-            width: "45%"
-        };
+        setLoaded(false);
+        setImg1Loaded(false);
+        setImg2Loaded(false);
 
-        const resume = {
-            padding: "20px 0px",
-            width: "100%",
-            height: "725px",
-        };
+        await Axios.post('applicants/submitMatch/' + winner + '/' + loser).then((res) => {
+            // Remove resume pair from head of queue
+            const removeHead = resumePairs.slice(1);
+            setResumePairs(removeHead);
 
-        const spacer = {
-            width: "5%",
-            display: "inline-block"
-        };
-
-        // Used to shield against users mashing the same arrow key repeatedly
-        function sleep(milliseconds) {
-            const date = Date.now();
-            let currentDate = null;
-            do {
-              currentDate = Date.now();
-            } while (currentDate - date < milliseconds);
-        }
-
-        // For using global this inside keydown function
-        var tthis = this;
-
-        // Left and right arrow keys choose the winner of the resume match
-        document.onkeydown = function(evt) {
-            evt = evt || window.event;
-            if (evt.repeat) { return }
-
-            let winner = null;
-            let loser = null;
-
-            if (evt.keyCode === 37) {
-                winner = tthis.state.id1;
-                loser = tthis.state.id2;
-            }
-            else if (evt.keyCode === 39) {
-                winner = tthis.state.id2;
-                loser = tthis.state.id1;
+            if (removeHead.length === 0) {
+                restockResumes();
+                alert('Please slow down the pace! 😓')
+                setTimeout(() => {
+                    setLoaded(true);
+                }, 3000);
+            } else {
+                setLoaded(true);
             }
 
-            Axios.post('applicants/submitMatch/' + winner + '/' + loser).then( res => {
-                // Remove two resumes from head of queue and update accoringly
-                console.log(res.data);
+            // When there aren't many resumes remaining in the queue, add more
+            if (removeHead.length === config.app.safety) {
+                restockResumes();
+            }
+        });
+    }
 
-                tthis.setState({
-                    resumes: tthis.state.resumes.filter((_, i) => i !== 0),
-                    resume1: tthis.state.resumes[0][0].resumeURL,
-                    resume2: tthis.state.resumes[0][1].resumeURL,
-                    id1: tthis.state.resumes[0][0]._id,
-                    id2: tthis.state.resumes[0][1]._id
-                });
+    useEffect(() => {
+        Axios.get('applicants/requestMatch/', {
+            params: {
+                count: config.app.queueSize,
+            }
+        }).then((res) => {
+            setResumePairs(res.data);
+            setTimeout(() => {
+                setLoaded(true);
+            }, 1000);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
-                // When there aren't many resumes remaining in the queue, add more
-                if (tthis.state.resumes.length === config.app.safety) {
-                    Axios.get('applicants/requestMatch/', {
-                        params: {
-                              count: config.app.queueSize,
-                        }
-                    }).then((res) => {
-                        console.log('Reloading resumes!');
-                        tthis.setState({
-                            resumes: tthis.state.resumes.concat(res.data)
-                        });
-                    }).catch((err) => {
-                        console.log(err);
-                    })
-                }
-            });
-        };
+    const containerStyle = {
+        height: window.innerHeight,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    };
 
+    const resumeStyle = {
+        borderRadius: '1%',
+        boxShadow: 'rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset'
+    }
+
+    if (loaded) {
         return (
-            <footer style={magic}>
-                <div className="container" onKeyDown={this.onKeyPressed} tabIndex="0">
+            <div style={containerStyle}>
                     <motion.div 
-                    animate={{ scale: 1 }} 
-                    transition={{ duration: 1 }} 
-                    initial={{ scale: 0.8}} 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.9 }}
-                    style={half}>
-                        <object style={resume} data={this.state.resume1} type="application/pdf">
-                            Resume could not load.
-                        </object>
+                        transition={{ duration: 0.2 }} 
+                        whileHover={{ scale: 1.025 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick=
+                            {
+                                () => {
+                                        pickResume(
+                                            true, 
+                                            resumePairs[0][0]._id, 
+                                            resumePairs[0][1]._id
+                                        )
+                                    }
+                            }
+                    >
+                        <img
+                            onLoad={() => setImg1Loaded(true)}
+                            style={{...resumeStyle, ...{display: img1Loaded ? 'inline' : 'none'}}}
+                            draggable={false}
+                            height={window.innerHeight*4/5}
+                            src={resumePairs[0][0].resumeURL}
+                            alt={'Could not load'} />    
                     </motion.div>
 
-                    <div style={spacer}></div>
-
                     <motion.div 
-                    animate={{ scale: 1 }} 
-                    transition={{ duration: 1 }} 
-                    initial={{ scale: 0.8}} 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.9 }}
-                    style={half}>
-                        <object style={resume} data={this.state.resume2} type="application/pdf">
-                            Resume could not load.
-                        </object>
+                        transition={{ duration: 0.2 }} 
+                        whileHover={{ scale: 1.025 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick=
+                            {
+                                () => {
+                                        pickResume(
+                                            false, 
+                                            resumePairs[0][0]._id, 
+                                            resumePairs[0][1]._id
+                                        )
+                                    }
+                            }
+                    >
+                        <img
+                            onLoad={() => setImg2Loaded(true)}
+                            style={{...resumeStyle, ...{display: img2Loaded ? 'inline' : 'none'}}}
+                            draggable={false}
+                            height={window.innerHeight*4/5}
+                            src={resumePairs[0][1].resumeURL}
+                            alt={'Could not load'} />
                     </motion.div>
-                </div>
-            </footer>
+            </div>
+        );
+    } else {
+        return (
+            <Loading />
         );
     }
-
 }
+
+export default Sift;

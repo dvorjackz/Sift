@@ -1,70 +1,67 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import { Axios } from '../util/config'
-
-// Doesn't work because list is dynamically generated
-const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.5
-        }
-    }
-}
+import Loading from './Loading';
   
 const item = {
     hidden: { opacity: 0 },
     show: { opacity: 1 }
 }
 
-const Ranking = ({rushees}) => (
-    <>
-      {rushees.map(rushee => (
-        <motion.li variants={item} style={ {listStyleType: "none"} } key={rushee._id}><a href={rushee.resumeURL}>{rushee.firstName} {rushee.lastName}</a></motion.li>
-      ))}
-    </>
-); 
+const Rankings = () => {
+    const [rankings, setRankings] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
-export default class Rankings extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            rankings: []
-        }
-    }
-
-    componentDidMount() {
-        Axios.get('applicants/rankings').then((res) => {
-            this.setState({
-                rankings: res.data
+    useEffect(() => {
+        Axios.get('applicants/rankings')
+            .then((res) => {
+                setRankings(res.data);
+                setLoaded(true);
+            })
+            .catch((err) => {
+                alert('Could not retrive rankings');
             });
-        });
+    }, []);
+
+    const containerStyle = {
+        height: window.innerHeight,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 
-    render() {
+    const rankingStyle = {
+        height: window.innerHeight*3/4,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflowY: 'auto'
+    };
 
-        const middle = {
-            height: '70vh',
-            marginTop: '10vh',
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            overflowY: "auto",
-        };
-
+    if (loaded) {
         return (
-            <motion.ol 
-            variants={container}
-            initial="hidden"
-            animate="show" 
-            style={middle}>
-                <Ranking rushees={this.state.rankings}></Ranking>
-            </motion.ol>
+            <div style={containerStyle}>
+                <div style={rankingStyle}>
+                    {
+                        rankings.map(applicant => (
+                            <motion.li variants={item} style={ {listStyleType: "none"} } key={applicant._id}>
+                                <a href={applicant.resumeURL}>
+                                    {applicant.firstName} {applicant.lastName}
+                                </a>
+                            </motion.li>
+                        ))
+                    }
+                </div>      
+            </div>      
+        );
+    } else {
+        return (
+            <Loading />
         );
     }
-
 }
+
+export default Rankings;

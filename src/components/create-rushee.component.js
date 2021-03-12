@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { HTTPClient } from '../axiosConfig';
 
@@ -64,7 +63,10 @@ export default class CreateRushee extends Component {
                 </Alert>
                 <div style={middle}>
                     <label className="btn btn-outline-primary">
-                        Upload Resume <input type="file" onChange={this.fileSelectedHandler} hidden multiple/>
+                        Upload Resumes <input type="file" onChange={this.fileSelectedHandler} hidden multiple/>
+                    </label>
+                    <label className="btn btn-outline-primary">
+                        Upload excel <input type="file" onChange={this.fileSelectedHandler} hidden multiple/>
                     </label>
                 </div>
             </div>

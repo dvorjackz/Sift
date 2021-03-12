@@ -1,29 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default class Navbar extends Component {
+const Navbar = ({ height }) => {
+    const nav = {
+        position: 'fixed',
+        height: height
+    };
 
-    render() {
-
-        const nav = {
-            paddingBottom: "0px"
-        };
-
-        return (
-            <nav style={nav} className="navbar navbar-light navbar-expand-lg">
-                <Link to="/" className="navbar-brand">Sift</Link>
-                <div className="collapse navbar-collapse">
-                    <ul className="navbar-nav mr-auto"> 
-                        <li className="navbar-item">
-                            <Link to="/rankings" className="nav-link">Rankings</Link>
-                        </li>
-                        <li className="navbar-item">
-                            <Link to="/create" className="nav-link">Add Rushee</Link>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        );
-    }
-
+    return (
+        <nav style={nav} className="navbar navbar-light navbar-expand-lg">
+            <Link to="/" className="navbar-brand"><b>sift</b></Link>
+            <div className="collapse navbar-collapse">
+                <ul className="navbar-nav mr-auto"> 
+                    <li className="navbar-item">
+                        <Link to="/rankings" className="nav-link">rankings</Link>
+                    </li>
+                    <li className="navbar-item">
+                        <Link to="/create" className="nav-link">add applicant</Link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    );
 }
+
+export default Navbar;
