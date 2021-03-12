@@ -103,13 +103,15 @@ const Sift = () => {
                                     }
                             }
                     >
-                        <img
-                            onLoad={() => setImg1Loaded(true)}
-                            style={{...resumeStyle, ...{display: img1Loaded ? 'inline' : 'none'}}}
-                            draggable={false}
-                            height={window.innerHeight*4/5}
-                            src={resumePairs[0][0].resumeURL}
-                            alt={'Could not load'} />    
+                        <div class="fade-in">
+                            <img
+                                onLoad={() => setImg1Loaded(true)}
+                                style={{...resumeStyle, ...{display: img1Loaded ? 'inline' : 'none'}}}
+                                draggable={false}
+                                height={window.innerHeight*4/5}
+                                src={resumePairs[0][0].resumeURL}
+                                alt={'Could not load'} /> 
+                        </div>   
                     </motion.div>
 
                     <motion.div 
@@ -127,13 +129,15 @@ const Sift = () => {
                                     }
                             }
                     >
-                        <img
-                            onLoad={() => setImg2Loaded(true)}
-                            style={{...resumeStyle, ...{display: img2Loaded ? 'inline' : 'none'}}}
-                            draggable={false}
-                            height={window.innerHeight*4/5}
-                            src={resumePairs[0][1].resumeURL}
-                            alt={'Could not load'} />
+                        <div class="fade-in">
+                            <img
+                                onLoad={() => setImg2Loaded(true)}
+                                style={{...resumeStyle, ...{display: img2Loaded ? 'inline' : 'none'}}}
+                                draggable={false}
+                                height={window.innerHeight*4/5}
+                                src={resumePairs[0][1].resumeURL}
+                                alt={'Could not load'} />
+                        </div>
                     </motion.div>
             </div>
         );
