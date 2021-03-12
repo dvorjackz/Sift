@@ -55,7 +55,7 @@ const Rankings = () => {
                         ))
                     }
                 </div>      
-            </div>      
+            </div>
         );
     } else {
         return (

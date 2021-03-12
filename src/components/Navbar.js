@@ -16,7 +16,7 @@ const Navbar = ({ height }) => {
                         <Link to="/rankings" className="nav-link">rankings</Link>
                     </li>
                     <li className="navbar-item">
-                        <Link to="/create" className="nav-link">add applicant</Link>
+                        <Link to="/create" className="nav-link">upload</Link>
                     </li>
                 </ul>
             </div>

@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from "./components/navbar.component";
-import Sift from "./components/sift.component";
-import Rankings from "./components/rankings.component";
-import CreateRushee from "./components/create-rushee.component";
+import Navbar from "./components/Navbar";
+import Sift from "./components/Sift";
+import Rankings from "./components/Rankings";
+import CreateRushee from "./components/Upload";
 
 function App() {
   return (
