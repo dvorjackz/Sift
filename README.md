@@ -1,2 +1,2 @@
 # Sift [![Netlify Status](https://api.netlify.com/api/v1/badges/408ef684-8b7d-4c17-b862-f15f91a45fb6/deploy-status)](https://app.netlify.com/sites/sift-us/deploys)
-Compare two resumes at time. Left and right arrow keys select the "winning" resume. Resumes are ranked using a chess-based elo system. Resumes are pulled in batches to improve performance. Backend repo found [here](https://github.com/dvorjackz/sift-serverless). Live at [sift.us.com](https://sift-us.com). 
+Compare two resumes at time and click to choose the winning one. Resumes are ranked using a chess-based elo system. Backend repo found [here](https://github.com/dvorjackz/sift-serverless). Live at [sift.us.com](https://sift-us.com). Ignore the Vercel deployments - Netlify is now used instead.

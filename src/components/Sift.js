@@ -122,9 +122,15 @@ const Sift = () => {
                         </div>   
                     </motion.div>
 
-                    <a href={resumePairs[0][0].resumeURL} target='_blank' rel='noreferrer'>
-                        🔍
-                    </a>
+                    <motion.div 
+                        transition={{ duration: 0.2 }} 
+                        whileHover={{ scale: 1.5 }}
+                        whileTap={{ scale: 0.75 }}
+                    >
+                        <a href={resumePairs[0][0].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
+                            🔍
+                        </a>
+                    </motion.div>
                 </div>
 
                 <div style={subContainerStyles}>
@@ -154,9 +160,15 @@ const Sift = () => {
                         </div>
                     </motion.div>
 
-                    <a href={resumePairs[0][1].resumeURL} target='_blank' rel='noreferrer'>
-                        🔍
-                    </a>
+                    <motion.div 
+                        transition={{ duration: 0.2 }} 
+                        whileHover={{ scale: 1.5 }}
+                        whileTap={{ scale: 0.75 }}
+                    >
+                        <a href={resumePairs[0][1].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
+                            🔍
+                        </a>
+                    </motion.div>
                 </div>
             </div>
         );
