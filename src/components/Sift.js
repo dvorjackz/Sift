@@ -14,8 +14,8 @@ const Sift = () => {
     const [img2Loaded, setImg2Loaded] = useState(false);
 
     // When there aren't many resumes remaining in the queue, add more
-    const restockResumes = () => {
-        Axios.get('applicants/requestMatch/', {
+    const restockResumes = async () => {
+        return Axios.get('applicants/requestMatch/', {
             params: {
                 count: config.app.queueSize,
             }
@@ -35,20 +35,21 @@ const Sift = () => {
         setImg1Loaded(false);
         setImg2Loaded(false);
 
-        await Axios.post('applicants/submitMatch/' + winner + '/' + loser).then((res) => {
+        if (resumePairs.length === 1) {
+            alert('Please slow down the pace! 😓')
+            await restockResumes();
+            setLoaded(true);
+        } else {
+            // Ensure spinner gif runs a bit between each resume pair 
+            setTimeout(() => {
+                setLoaded(true);
+            }, 500);
+        }
+
+        Axios.post('applicants/submitMatch/' + winner + '/' + loser).then((res) => {
             // Remove resume pair from head of queue
             const removeHead = resumePairs.slice(1);
             setResumePairs(removeHead);
-
-            if (removeHead.length === 0) {
-                restockResumes();
-                alert('Please slow down the pace! 😓')
-                setTimeout(() => {
-                    setLoaded(true);
-                }, 3000);
-            } else {
-                setLoaded(true);
-            }
 
             // When there aren't many resumes remaining in the queue, add more
             if (removeHead.length === config.app.safety) {
@@ -58,18 +59,7 @@ const Sift = () => {
     }
 
     useEffect(() => {
-        Axios.get('applicants/requestMatch/', {
-            params: {
-                count: config.app.queueSize,
-            }
-        }).then((res) => {
-            setResumePairs(res.data);
-            setTimeout(() => {
-                setLoaded(true);
-            }, 1000);
-        }).catch((err) => {
-            console.log(err);
-        });
+        restockResumes().then(() => setLoaded(true));
     }, []);
 
     const containerStyles = {
@@ -127,9 +117,11 @@ const Sift = () => {
                         whileHover={{ scale: 1.5 }}
                         whileTap={{ scale: 0.75 }}
                     >
-                        <a href={resumePairs[0][0].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
-                            🔍
-                        </a>
+                        <div class="fade-in">
+                            <a href={resumePairs[0][0].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
+                                🔍
+                            </a>
+                        </div>
                     </motion.div>
                 </div>
 
@@ -165,9 +157,11 @@ const Sift = () => {
                         whileHover={{ scale: 1.5 }}
                         whileTap={{ scale: 0.75 }}
                     >
-                        <a href={resumePairs[0][1].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
-                            🔍
-                        </a>
+                        <div class="fade-in">
+                            <a href={resumePairs[0][1].resumeURL} style={{ textDecoration: 'none' }} target='_blank' rel='noreferrer'>
+                                🔍
+                            </a>
+                        </div>
                     </motion.div>
                 </div>
             </div>
