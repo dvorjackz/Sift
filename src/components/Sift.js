@@ -9,9 +9,6 @@ const Sift = () => {
     const [resumePairs, setResumePairs] = useState([]);
     // For dealing with HTTP request blocking
     const [loaded, setLoaded] = useState(false);
-    // Following two help just slightly with images flickering on load
-    const [img1Loaded, setImg1Loaded] = useState(false);
-    const [img2Loaded, setImg2Loaded] = useState(false);
 
     // When there aren't many resumes remaining in the queue, add more
     const restockResumes = async () => {
@@ -32,8 +29,6 @@ const Sift = () => {
         let loser = resume1wins ? resume2 : resume1;
 
         setLoaded(false);
-        setImg1Loaded(false);
-        setImg2Loaded(false);
 
         if (resumePairs.length === 1) {
             alert('Please slow down the pace! 😓')
@@ -103,8 +98,7 @@ const Sift = () => {
                     >
                         <div class="fade-in">
                             <img
-                                onLoad={() => setImg1Loaded(true)}
-                                style={{...resumeStyles, ...{display: img1Loaded ? 'inline' : 'none'}}}
+                                style={resumeStyles}
                                 draggable={false}
                                 height={window.innerHeight*4/5}
                                 src={resumePairs[0][0].resumeURL}
@@ -143,8 +137,7 @@ const Sift = () => {
                     >
                         <div class="fade-in">
                             <img
-                                onLoad={() => setImg2Loaded(true)}
-                                style={{...resumeStyles, ...{display: img2Loaded ? 'inline' : 'none'}}}
+                                style={resumeStyles}
                                 draggable={false}
                                 height={window.innerHeight*4/5}
                                 src={resumePairs[0][1].resumeURL}
